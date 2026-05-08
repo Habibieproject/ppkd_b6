@@ -12,7 +12,15 @@ class ContainerDay8 extends StatelessWidget {
       ),
       body: Column(
         children: [
-          Container(height: 200, width: 200, color: Colors.red),
+          Container(
+            height: 200,
+            width: 200,
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage("assets/images/kucing.jpeg"),
+              ),
+            ),
+          ),
           Row(
             children: [Container(height: 150, width: 100, color: Colors.blue)],
           ),
@@ -31,7 +39,6 @@ class ContainerDay8 extends StatelessWidget {
                 BoxShadow(
                   offset: Offset(2, 2),
                   blurStyle: BlurStyle.outer,
-
                   color: Colors.red,
                   blurRadius: 10,
                 ),

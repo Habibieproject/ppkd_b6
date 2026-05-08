@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:ppkd_b6/day_8/container.dart';
+import 'package:ppkd_b6/day_8/spacer.dart';
 
 void main() {
   runApp(const MyApp());
@@ -34,7 +34,7 @@ class MyApp extends StatelessWidget {
           // Warna.biru
         ),
       ),
-      home: ContainerDay8(),
+      home: SpacerDay8(),
     );
   }
 }
