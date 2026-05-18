@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:ppkd_b6/day_10/listtile.dart';
+import 'package:ppkd_b6/day_12/state_simple.dart';
 
 void main() {
   runApp(const MyApp());
@@ -34,7 +34,7 @@ class MyApp extends StatelessWidget {
           // Warna.biru
         ),
       ),
-      home: ListtileDay10(),
+      home: StateDay12(),
     );
   }
 }
