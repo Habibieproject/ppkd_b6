@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:ppkd_b6/day_13/textform.dart';
+import 'package:ppkd_b6/day_14/login_screen.dart';
 import 'package:ppkd_b6/extension/navigator.dart';
 
 class SplashScreenDay13 extends StatelessWidget {
@@ -16,7 +16,8 @@ class SplashScreenDay13 extends StatelessWidget {
             onPressed: () {
               // context.pushNamed("/login");
               // context.push(TextRichDay13());
-              context.push(TextFormDay13());
+              // context.push(TextFormDay13());
+              context.push(LoginScreenDay14());
             },
             child: Text("Ke halaman login"),
           ),

@@ -34,3 +34,37 @@ class DefaultButton extends StatelessWidget {
     );
   }
 }
+
+class ButtonWithIcon extends StatelessWidget {
+  const ButtonWithIcon({super.key, required this.text, required this.image});
+  final String text;
+  final String image;
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        Expanded(
+          child: OutlinedButton(
+            style: OutlinedButton.styleFrom(
+              side: BorderSide(width: 1, color: AppColor.greyColorDivider),
+
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10),
+                side: BorderSide(width: 1, color: AppColor.greyColorDivider),
+              ),
+            ),
+            onPressed: () {},
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Image.asset(image),
+                SizedBox(width: 8),
+                Text(text, style: TextStyle(color: Colors.black)),
+              ],
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+}

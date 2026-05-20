@@ -20,4 +20,13 @@ class AppColor {
   static const Color borderColor = Color(0xffE5E7EB);
   static const Color redSetetesColor = Color(0xffD61000);
   static const Color greyText2 = Color(0xff4B5563);
+
+  //gradient color
+  static const Color gradientColor1 = Color(0xff4983F6);
+  static const Color gradientColor2 = Color(0xffC175F5);
+  static const Color gradientColor3 = Color(0xffFBACB7);
+  static const Color greyColorOr = Color(0xff6C7278);
+  static const Color greyColorDivider = Color(0xffEDF1F3);
+  static const Color blueForgot = Color(0xff4D81E7);
+  static const Color blueButtons = Color(0xff1D61E7);
 }

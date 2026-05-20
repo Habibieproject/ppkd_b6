@@ -30,10 +30,12 @@ environment:
 dependencies:
   confetti: ^0.8.0
   cupertino_icons: ^1.0.8
-  fluttertoast: ^9.0.0
   flutter:
     sdk: flutter
+  fluttertoast: ^9.0.0
   shared_preferences: ^2.5.5
+  simple_gradient_text: ^1.4.0
+  syncfusion_flutter_pdfviewer: ^33.2.7
 
 dev_dependencies:
   flutter_lints: ^6.0.0
