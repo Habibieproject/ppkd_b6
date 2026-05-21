@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:ppkd_b6/constant/app_color.dart';
 import 'package:ppkd_b6/constant/app_image.dart';
-import 'package:ppkd_b6/day_14/home_screen.dart';
+import 'package:ppkd_b6/day_15/main_screen_drawer.dart';
 import 'package:ppkd_b6/extension/navigator.dart';
 import 'package:ppkd_b6/utils/button.dart';
 import 'package:simple_gradient_text/simple_gradient_text.dart';
@@ -182,7 +182,10 @@ class _LoginScreenDay14State extends State<LoginScreenDay14> {
                                         actions: [
                                           TextButton(
                                             onPressed: () {
-                                              context.push(HomeScreenDay14());
+                                              context.push(
+                                                MainScreenDrawerDay15(),
+                                              );
+                                              // context.push(MainScreen2Day15());
                                             },
                                             child: Text("Lanjut"),
                                           ),

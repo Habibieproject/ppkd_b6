@@ -33,6 +33,8 @@ dependencies:
   flutter:
     sdk: flutter
   fluttertoast: ^9.0.0
+  intl: ^0.20.2
+  persistent_bottom_nav_bar_v2: ^6.3.2
   shared_preferences: ^2.5.5
   simple_gradient_text: ^1.4.0
   syncfusion_flutter_pdfviewer: ^33.2.7

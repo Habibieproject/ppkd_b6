@@ -20,6 +20,7 @@ class _HomeScreenDay14 extends State<HomeScreenDay14> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         title: const Text('Syncfusion Flutter PDF Viewer'),
         actions: <Widget>[
           IconButton(

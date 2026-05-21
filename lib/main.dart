@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:intl/date_symbol_data_local.dart';
 import 'package:ppkd_b6/day_13/navigator.dart';
 import 'package:ppkd_b6/day_13/splash_screen.dart';
 
-void main() {
+void main() async {
+  await initializeDateFormatting('pt_BR', null);
   runApp(const MyApp());
 }
 

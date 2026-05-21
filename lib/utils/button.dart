@@ -1,3 +1,4 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 import 'package:ppkd_b6/constant/app_color.dart';
 
@@ -36,9 +37,15 @@ class DefaultButton extends StatelessWidget {
 }
 
 class ButtonWithIcon extends StatelessWidget {
-  const ButtonWithIcon({super.key, required this.text, required this.image});
+  const ButtonWithIcon({
+    super.key,
+    required this.text,
+    required this.image,
+    this.onPressed,
+  });
   final String text;
   final String image;
+  final void Function()? onPressed;
   @override
   Widget build(BuildContext context) {
     return Row(
@@ -53,7 +60,7 @@ class ButtonWithIcon extends StatelessWidget {
                 side: BorderSide(width: 1, color: AppColor.greyColorDivider),
               ),
             ),
-            onPressed: () {},
+            onPressed: onPressed,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
