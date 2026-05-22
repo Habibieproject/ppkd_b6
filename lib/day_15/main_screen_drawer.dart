@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:ppkd_b6/day_13/splash_screen.dart';
 import 'package:ppkd_b6/day_15/input_widget.dart';
+import 'package:ppkd_b6/day_16/views/list.dart';
+import 'package:ppkd_b6/day_16/views/list_with_model.dart';
+import 'package:ppkd_b6/day_16/views/map.dart';
 import 'package:ppkd_b6/utils/app_drawer.dart';
 
 class MainScreenDrawerDay15 extends StatefulWidget {
@@ -15,8 +17,9 @@ class _MainScreenDrawerDay15State extends State<MainScreenDrawerDay15> {
 
   static const List<Widget> _widgetOptions = <Widget>[
     InputWidgetDay15(),
-    Text('Index 1: Business'),
-    SplashScreenDay13(),
+    ListDataDay16(),
+    MapDataDay16(),
+    ListWithModelDataDay16(),
   ];
 
   void _onItemTapped(int index) {

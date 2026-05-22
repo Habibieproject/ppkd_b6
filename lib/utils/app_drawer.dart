@@ -32,7 +32,7 @@ class AppDrawer extends StatelessWidget {
             },
           ),
           AppDrawerTile(
-            title: "Business",
+            title: "List Data",
             isSelected: selectedIndex == 1,
             onTap: () {
               onItemTapped(1);
@@ -40,10 +40,18 @@ class AppDrawer extends StatelessWidget {
             },
           ),
           AppDrawerTile(
-            title: "Profile",
+            title: "Map Data",
             isSelected: selectedIndex == 2,
             onTap: () {
               onItemTapped(2);
+              context.pop();
+            },
+          ),
+          AppDrawerTile(
+            title: "List Model Data",
+            isSelected: selectedIndex == 3,
+            onTap: () {
+              onItemTapped(3);
               context.pop();
             },
           ),
