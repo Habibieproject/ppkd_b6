@@ -16,6 +16,8 @@ class LoginScreenDay14 extends StatefulWidget {
 
 class _LoginScreenDay14State extends State<LoginScreenDay14> {
   final _formKey = GlobalKey<FormState>();
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -110,6 +112,7 @@ class _LoginScreenDay14State extends State<LoginScreenDay14> {
                           SizedBox(height: 12),
 
                           textFormConst(
+                            controller: emailController,
                             validator: (value) {
                               if (value == null || value.isEmpty) {
                                 return "Email tidak boleh kosong";
@@ -126,6 +129,7 @@ class _LoginScreenDay14State extends State<LoginScreenDay14> {
                           SizedBox(height: 12),
 
                           textFormConst(
+                            controller: passwordController,
                             hintText: "Masukkan Password",
                             validator: (value) {
                               if (value == null || value.isEmpty) {
@@ -136,6 +140,10 @@ class _LoginScreenDay14State extends State<LoginScreenDay14> {
                               return null;
                             },
                           ),
+                          // Text(
+                          //   emailController.text,
+                          //   style: TextStyle(fontSize: 50),
+                          // ),
                           SizedBox(height: 24),
 
                           Row(
@@ -183,7 +191,11 @@ class _LoginScreenDay14State extends State<LoginScreenDay14> {
                                           TextButton(
                                             onPressed: () {
                                               context.push(
-                                                MainScreenDrawerDay15(),
+                                                MainScreenDrawerDay15(
+                                                  email: emailController.text,
+                                                  password:
+                                                      passwordController.text,
+                                                ),
                                               );
                                               // context.push(MainScreen2Day15());
                                             },
@@ -194,6 +206,7 @@ class _LoginScreenDay14State extends State<LoginScreenDay14> {
                                     },
                                   );
                                 } else {
+                                  print(emailController.text);
                                   Fluttertoast.showToast(
                                     msg: "Silakan periksa kembali",
                                     toastLength: Toast.LENGTH_SHORT,
@@ -251,9 +264,14 @@ class _LoginScreenDay14State extends State<LoginScreenDay14> {
   TextFormField textFormConst({
     required String hintText,
     required String? Function(String?)? validator,
+    required TextEditingController controller,
   }) {
     return TextFormField(
+      onChanged: (value) {
+        setState(() {});
+      },
       validator: validator,
+      controller: controller,
       decoration: InputDecoration(
         hintText: hintText,
         enabledBorder: borderConst(),

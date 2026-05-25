@@ -6,8 +6,13 @@ import 'package:ppkd_b6/day_16/views/map.dart';
 import 'package:ppkd_b6/utils/app_drawer.dart';
 
 class MainScreenDrawerDay15 extends StatefulWidget {
-  const MainScreenDrawerDay15({super.key});
-
+  const MainScreenDrawerDay15({
+    super.key,
+    required this.email,
+    required this.password,
+  });
+  final String email;
+  final String password;
   @override
   State<MainScreenDrawerDay15> createState() => _MainScreenDrawerDay15State();
 }
@@ -36,7 +41,12 @@ class _MainScreenDrawerDay15State extends State<MainScreenDrawerDay15> {
         onItemTapped: _onItemTapped,
         selectedIndex: _selectedIndex,
       ),
-      endDrawer: const Drawer(),
+      endDrawer: Drawer(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [Text(widget.email), Text(widget.password)],
+        ),
+      ),
       appBar: AppBar(title: const Text('Drawer')),
       body: Center(child: _widgetOptions.elementAt(_selectedIndex)),
       // bottomNavigationBar: BottomNavigationBar(
