@@ -3,6 +3,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:ppkd_b6/constant/app_color.dart';
 import 'package:ppkd_b6/constant/app_image.dart';
 import 'package:ppkd_b6/day_15/main_screen_drawer.dart';
+import 'package:ppkd_b6/day_19/database/preference_handler.dart';
 import 'package:ppkd_b6/extension/navigator.dart';
 import 'package:ppkd_b6/utils/button.dart';
 import 'package:simple_gradient_text/simple_gradient_text.dart';
@@ -189,7 +190,10 @@ class _LoginScreenDay14State extends State<LoginScreenDay14> {
                                         content: Text("Anda berhasil login"),
                                         actions: [
                                           TextButton(
-                                            onPressed: () {
+                                            onPressed: () async {
+                                              await PreferenceHandler.setLogin(
+                                                true,
+                                              );
                                               context.push(
                                                 MainScreenDrawerDay15(
                                                   email: emailController.text,

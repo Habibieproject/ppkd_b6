@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:ppkd_b6/day_14/login_screen.dart';
+import 'package:ppkd_b6/day_19/database/preference_handler.dart';
 import 'package:ppkd_b6/extension/navigator.dart';
 
 class AppDrawer extends StatelessWidget {
@@ -53,6 +55,14 @@ class AppDrawer extends StatelessWidget {
             onTap: () {
               onItemTapped(3);
               context.pop();
+            },
+          ),
+          AppDrawerTile(
+            title: "LogOut",
+            isSelected: selectedIndex == 3,
+            onTap: () {
+              PreferenceHandler.logOut();
+              context.pushAndRemoveAll(LoginScreenDay14());
             },
           ),
         ],
