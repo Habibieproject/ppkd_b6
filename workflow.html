@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Workflow Pengerjaan Task Redesign Login</title>
+    <style>
+        :root {
+            --primary: #4F46E5;
+            --secondary: #818CF8;
+            --bg: #F3F4F6;
+            --text-main: #1F2937;
+            --text-muted: #6B7280;
+            --card-bg: #FFFFFF;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg);
+            color: var(--text-main);
+            line-height: 1.6;
+            margin: 0;
+            padding: 40px 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        h1 {
+            color: var(--primary);
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            color: var(--text-muted);
+            font-size: 1.1rem;
+        }
+
+        .timeline {
+            position: relative;
+            max-width: 100%;
+            margin: 0 auto;
+        }
+
+        .timeline::after {
+            content: '';
+            position: absolute;
+            width: 4px;
+            background-color: var(--secondary);
+            top: 0;
+            bottom: 0;
+            left: 30px;
+            margin-left: -2px;
+            border-radius: 4px;
+        }
+
+        .step {
+            padding: 20px 30px;
+            position: relative;
+            background-color: inherit;
+            width: calc(100% - 80px);
+            margin-left: 60px;
+            margin-bottom: 30px;
+        }
+
+        .step-content {
+            padding: 25px;
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s ease;
+        }
+
+        .step-content:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(79, 70, 229, 0.15);
+        }
+
+        .step::after {
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            left: -40px;
+            background-color: white;
+            border: 4px solid var(--primary);
+            top: 30px;
+            border-radius: 50%;
+            z-index: 1;
+        }
+
+        h2 {
+            color: var(--primary);
+            margin-top: 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .step-number {
+            background: var(--primary);
+            color: white;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        ul {
+            padding-left: 20px;
+            color: var(--text-muted);
+        }
+
+        li {
+            margin-bottom: 8px;
+        }
+
+        code {
+            background: #E5E7EB;
+            padding: 2px 6px;
+            border-radius: 4px;
+            color: #EF4444;
+            font-family: monospace;
+            font-size: 0.9em;
+        }
+
+        .tech-stack {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+            flex-wrap: wrap;
+        }
+
+        .badge {
+            background: #EEF2FF;
+            color: var(--primary);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        @media screen and (max-width: 600px) {
+            .timeline::after {
+                left: 20px;
+            }
+            .step {
+                width: calc(100% - 50px);
+                margin-left: 40px;
+            }
+            .step::after {
+                left: -28px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <header>
+            <h1>AI Agent Workflow</h1>
+            <p class="subtitle">Laporan proses pengerjaan redesign Login Screen (Day 20 -> Day 21)</p>
+        </header>
+
+        <div class="timeline">
+            
+            <!-- Step 1 -->
+            <div class="step">
+                <div class="step-content">
+                    <h2><span class="step-number">1</span> Investigasi & Analisis</h2>
+                    <p>Sebelum menulis kode, saya perlu memahami struktur proyek Anda.</p>
+                    <ul>
+                        <li>Membaca direktori workspace <code>lib/</code> menggunakan tool penjelajah folder.</li>
+                        <li>Mencari letak file login yang asli di <code>lib/day_20/views/login_screen.dart</code>.</li>
+                        <li>Membaca isi kode asli untuk memahami logika yang sudah ada (seperti penggunaan <code>DBHelper</code>, koneksi ke database SQLite, dan navigasi ke <code>HomeScreenDay20</code>).</li>
+                    </ul>
+                    <div class="tech-stack">
+                        <span class="badge">Code Analysis</span>
+                        <span class="badge">Directory Listing</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Step 2 -->
+            <div class="step">
+                <div class="step-content">
+                    <h2><span class="step-number">2</span> Pembuatan Rencana (Planning)</h2>
+                    <p>Saya membuat rancangan teknis (Implementation Plan) dan meminta persetujuan Anda sebelum mengubah apapun.</p>
+                    <ul>
+                        <li>Membuat dokumen <code>implementation_plan.md</code>.</li>
+                        <li>Mengusulkan desain visual baru: transisi dari gambar background statis ke desain bergaya <strong>Modern Card</strong> dengan <strong>Gradient Background</strong>.</li>
+                        <li>Memastikan bahwa fungsi database dan validasi form tetap dipertahankan.</li>
+                        <li>Menunggu Anda menyetujui plan tersebut.</li>
+                    </ul>
+                    <div class="tech-stack">
+                        <span class="badge">Planning Mode</span>
+                        <span class="badge">Markdown</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Step 3 -->
+            <div class="step">
+                <div class="step-content">
+                    <h2><span class="step-number">3</span> Eksekusi (Coding)</h2>
+                    <p>Setelah Anda setuju, saya mulai membuat checklist tugas dan menulis kodenya.</p>
+                    <ul>
+                        <li>Membuat file <code>task.md</code> untuk melacak progres (To-Do List).</li>
+                        <li>Membuat folder baru <code>lib/day_21/views/</code>.</li>
+                        <li>Menulis kode <code>login_screen.dart</code> yang baru.</li>
+                        <li><strong>Perubahan UI:</strong> Menggunakan <code>LinearGradient</code>, form input yang lebih rapi dengan <code>prefixIcon</code>, sudut melengkung (rounded corners), shadow yang lembut, serta <code>ElevatedButton</code> yang modern.</li>
+                    </ul>
+                    <div class="tech-stack">
+                        <span class="badge">Flutter</span>
+                        <span class="badge">Dart</span>
+                        <span class="badge">UI/UX Design</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Step 4 -->
+            <div class="step">
+                <div class="step-content">
+                    <h2><span class="step-number">4</span> Dokumentasi & Penutupan</h2>
+                    <p>Langkah terakhir adalah memastikan semua tugas tercatat selesai dan memberikan laporan.</p>
+                    <ul>
+                        <li>Mencentang semua tugas di <code>task.md</code> menjadi selesai.</li>
+                        <li>Membuat dokumen <code>walkthrough.md</code> untuk merangkum semua perubahan yang telah saya lakukan agar Anda mudah memahaminya.</li>
+                        <li>Memberitahu Anda bahwa tugas telah selesai.</li>
+                    </ul>
+                    <div class="tech-stack">
+                        <span class="badge">Documentation</span>
+                        <span class="badge">Task Tracking</span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</body>
+</html>
