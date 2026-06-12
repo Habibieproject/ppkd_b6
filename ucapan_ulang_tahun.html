@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Selamat Ulang Tahun — Bapak E. Suzukiana, AP., M.Si</title>
+  <style>
+    :root {
+      --merah: #b10c0c;
+      --merah-muda: #e23b3b;
+      --emas: #f5b301;
+      --krem: #fff7ef;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: radial-gradient(circle at 20% 20%, #7a0808 0%, #b10c0c 45%, #5e0404 100%);
+      overflow-x: hidden;
+      color: #fff;
+      padding: 24px;
+    }
+
+    /* Confetti */
+    canvas#confetti {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 5;
+    }
+
+    .card {
+      position: relative;
+      z-index: 10;
+      width: 100%;
+      max-width: 620px;
+      background: rgba(255, 247, 239, 0.97);
+      color: #2c2c2c;
+      border-radius: 28px;
+      padding: 48px 36px 40px;
+      text-align: center;
+      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.45);
+      animation: pop 0.8s cubic-bezier(0.18, 0.89, 0.32, 1.28) both;
+    }
+
+    @keyframes pop {
+      0% { transform: scale(0.6) translateY(40px); opacity: 0; }
+      100% { transform: scale(1) translateY(0); opacity: 1; }
+    }
+
+    .eyebrow {
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--merah);
+      margin-bottom: 14px;
+    }
+
+    h1 {
+      font-size: 30px;
+      line-height: 1.25;
+      color: var(--merah);
+      margin-bottom: 6px;
+    }
+
+    h1 .nama {
+      display: block;
+      font-size: 34px;
+      margin-top: 8px;
+      background: linear-gradient(90deg, var(--merah), var(--merah-muda), var(--emas));
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .jabatan {
+      font-size: 15px;
+      color: #555;
+      margin-bottom: 26px;
+      font-style: italic;
+    }
+
+    /* Kue */
+    .cake-wrap { margin: 10px auto 28px; width: 200px; }
+    .cake { position: relative; width: 200px; height: 150px; margin: 0 auto; }
+
+    .candle {
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      top: 0;
+      width: 12px;
+      height: 42px;
+      background: repeating-linear-gradient(45deg, #fff 0 6px, var(--merah) 6px 12px);
+      border-radius: 3px;
+      z-index: 3;
+    }
+    .flame {
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      top: -22px;
+      width: 16px;
+      height: 24px;
+      background: radial-gradient(circle at 50% 70%, #fff 0%, var(--emas) 35%, #ff7a00 75%, transparent 100%);
+      border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+      transform-origin: bottom center;
+      animation: flicker 0.25s infinite alternate;
+      z-index: 4;
+    }
+    .flame.out { display: none; }
+    @keyframes flicker {
+      from { transform: translateX(-50%) scale(1) rotate(-3deg); opacity: 1; }
+      to   { transform: translateX(-50%) scale(1.12) rotate(3deg); opacity: 0.85; }
+    }
+
+    .layer { position: absolute; left: 0; right: 0; border-radius: 14px; }
+    .layer-top {
+      top: 42px; height: 46px;
+      background: linear-gradient(180deg, #ffd9d9, var(--merah-muda));
+      box-shadow: inset 0 -6px 0 rgba(0,0,0,0.08);
+    }
+    .layer-bottom {
+      top: 86px; height: 60px;
+      background: linear-gradient(180deg, var(--merah-muda), var(--merah));
+      box-shadow: inset 0 -8px 0 rgba(0,0,0,0.12);
+    }
+    .drip {
+      position: absolute; top: 78px; left: 0; right: 0; height: 18px;
+      background:
+        radial-gradient(circle at 10% 0, #fff 0 8px, transparent 9px),
+        radial-gradient(circle at 30% 0, #fff 0 10px, transparent 11px),
+        radial-gradient(circle at 50% 0, #fff 0 8px, transparent 9px),
+        radial-gradient(circle at 70% 0, #fff 0 10px, transparent 11px),
+        radial-gradient(circle at 90% 0, #fff 0 8px, transparent 9px);
+      z-index: 2;
+    }
+
+    .pesan {
+      font-size: 16px;
+      line-height: 1.7;
+      color: #444;
+      margin: 8px 4px 26px;
+    }
+    .pesan strong { color: var(--merah); }
+
+    .btn {
+      border: none;
+      cursor: pointer;
+      padding: 14px 26px;
+      border-radius: 999px;
+      font-size: 15px;
+      font-weight: 700;
+      color: #fff;
+      background: linear-gradient(90deg, var(--merah), var(--merah-muda));
+      box-shadow: 0 10px 24px rgba(177, 12, 12, 0.4);
+      transition: transform 0.15s ease, box-shadow 0.15s ease;
+    }
+    .btn:hover { transform: translateY(-2px); box-shadow: 0 14px 30px rgba(177, 12, 12, 0.5); }
+    .btn:active { transform: translateY(0); }
+
+    .footer {
+      margin-top: 26px;
+      font-size: 13px;
+      color: #888;
+    }
+
+    .balloons { position: fixed; inset: 0; pointer-events: none; z-index: 1; }
+    .balloon {
+      position: absolute;
+      bottom: -120px;
+      width: 46px; height: 58px;
+      border-radius: 50%;
+      opacity: 0.85;
+      animation: float-up linear infinite;
+    }
+    .balloon::after {
+      content: ""; position: absolute; bottom: -10px; left: 50%;
+      width: 2px; height: 14px; background: rgba(255,255,255,0.6); transform: translateX(-50%);
+    }
+    @keyframes float-up {
+      0%   { transform: translateY(0) translateX(0); }
+      100% { transform: translateY(-115vh) translateX(30px); }
+    }
+
+    @media (max-width: 480px) {
+      .card { padding: 36px 22px 30px; }
+      h1 { font-size: 24px; }
+      h1 .nama { font-size: 26px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="balloons" id="balloons"></div>
+  <canvas id="confetti"></canvas>
+
+  <main class="card">
+    <p class="eyebrow">🎉 Hari Istimewa 🎉</p>
+    <h1>
+      Selamat Ulang Tahun
+      <span class="nama">Bapak E. Suzukiana, AP., M.Si</span>
+    </h1>
+    <p class="jabatan">Kepala PPKD Jakarta Pusat</p>
+
+    <div class="cake-wrap">
+      <div class="cake" id="cake">
+        <div class="flame" id="flame"></div>
+        <div class="candle"></div>
+        <div class="layer layer-top"></div>
+        <div class="drip"></div>
+        <div class="layer layer-bottom"></div>
+      </div>
+    </div>
+
+    <p class="pesan">
+      Di hari yang penuh berkah ini, kami segenap keluarga besar
+      <strong>PPKD Jakarta Pusat</strong> mengucapkan selamat ulang tahun.
+      Semoga Bapak senantiasa diberikan <strong>kesehatan</strong>,
+      <strong>kebahagiaan</strong>, dan <strong>keberkahan</strong> dalam memimpin
+      serta membimbing kami semua. Terima kasih atas dedikasi dan teladannya. 🙏
+    </p>
+
+    <button class="btn" id="celebrate">🎂 Tiup Lilin &amp; Rayakan!</button>
+
+    <p class="footer">Dengan hormat &amp; doa terbaik — Keluarga Besar PPKD JP</p>
+  </main>
+
+  <script>
+    // ---------- Balloons ----------
+    (function () {
+      const colors = ["#f5b301", "#e23b3b", "#ffffff", "#ffd9d9", "#ff7a00"];
+      const wrap = document.getElementById("balloons");
+      for (let i = 0; i < 12; i++) {
+        const b = document.createElement("div");
+        b.className = "balloon";
+        b.style.left = Math.random() * 100 + "vw";
+        b.style.background = colors[i % colors.length];
+        b.style.animationDuration = 8 + Math.random() * 8 + "s";
+        b.style.animationDelay = Math.random() * 8 + "s";
+        wrap.appendChild(b);
+      }
+    })();
+
+    // ---------- Confetti ----------
+    const canvas = document.getElementById("confetti");
+    const ctx = canvas.getContext("2d");
+    let W, H, pieces = [];
+
+    function resize() {
+      W = canvas.width = window.innerWidth;
+      H = canvas.height = window.innerHeight;
+    }
+    window.addEventListener("resize", resize);
+    resize();
+
+    const palette = ["#f5b301", "#e23b3b", "#b10c0c", "#ffffff", "#ff7a00"];
+
+    function burst(count) {
+      for (let i = 0; i < count; i++) {
+        pieces.push({
+          x: Math.random() * W,
+          y: -20,
+          w: 6 + Math.random() * 8,
+          h: 8 + Math.random() * 10,
+          vx: (Math.random() - 0.5) * 4,
+          vy: 2 + Math.random() * 4,
+          rot: Math.random() * Math.PI,
+          vr: (Math.random() - 0.5) * 0.3,
+          color: palette[Math.floor(Math.random() * palette.length)],
+        });
+      }
+    }
+
+    function loop() {
+      ctx.clearRect(0, 0, W, H);
+      pieces.forEach((p) => {
+        p.x += p.vx;
+        p.y += p.vy;
+        p.rot += p.vr;
+        ctx.save();
+        ctx.translate(p.x, p.y);
+        ctx.rotate(p.rot);
+        ctx.fillStyle = p.color;
+        ctx.fillRect(-p.w / 2, -p.h / 2, p.w, p.h);
+        ctx.restore();
+      });
+      pieces = pieces.filter((p) => p.y < H + 30);
+      requestAnimationFrame(loop);
+    }
+    loop();
+
+    // Confetti awal saat halaman dibuka
+    burst(140);
+
+    // ---------- Tombol rayakan ----------
+    const flame = document.getElementById("flame");
+    document.getElementById("celebrate").addEventListener("click", () => {
+      flame.classList.toggle("out");
+      burst(200);
+    });
+
+    // Tiup lilin saat kue diklik
+    document.getElementById("cake").addEventListener("click", () => {
+      flame.classList.add("out");
+      burst(120);
+    });
+  </script>
+</body>
+</html>
