@@ -5,7 +5,9 @@ import 'dart:math';
 import 'package:confetti/confetti.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:ppkd_b6/constant/app_color.dart';
+import 'package:ppkd_b6/random_picker/picker_logic.dart';
 import 'package:ppkd_b6/utils/button.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -20,10 +22,11 @@ class _RandomPickerScreenState extends State<RandomPickerScreen> {
   List<String> allNames = [];
   List<String> availableNames = [];
   List<String> eliminatedNames = [];
-  String selectedName = "Tekan tombol untuk memilih";
+  String selectedName = kPickerPlaceholder;
   bool isPicking = false;
   final Random random = Random();
   Timer? _timer;
+  int _animationKey = 0;
   late ConfettiController confettiController;
 
   @override
@@ -54,20 +57,65 @@ class _RandomPickerScreenState extends State<RandomPickerScreen> {
 
   Future<void> _loadSavedState() async {
     final prefs = await SharedPreferences.getInstance();
+
+    // Bridge the separate SharedPreferences entries into a payload map so the
+    // pure serialization/fallback logic in picker_logic.dart owns the parsing.
+    final payload = <String, dynamic>{};
+    final storedSelected = prefs.getString(kSelectedNameKey);
+    final storedAvailable = prefs.getStringList(kAvailableNamesKey);
+    final storedEliminated = prefs.getStringList(kEliminatedNamesKey);
+    if (storedSelected != null) payload[kSelectedNameKey] = storedSelected;
+    if (storedAvailable != null) payload[kAvailableNamesKey] = storedAvailable;
+    if (storedEliminated != null) {
+      payload[kEliminatedNamesKey] = storedEliminated;
+    }
+
+    final state = loadPickerState(payload.isEmpty ? null : payload, allNames);
     setState(() {
-      selectedName =
-          prefs.getString('selectedName') ?? "Tekan tombol untuk memilih";
-      availableNames =
-          prefs.getStringList('availableNames') ?? List<String>.from(allNames);
-      eliminatedNames = prefs.getStringList('eliminatedNames') ?? [];
+      selectedName = state.selectedName;
+      availableNames = List<String>.from(state.availableNames);
+      eliminatedNames = List<String>.from(state.eliminatedNames);
     });
   }
 
+  /// Persists the current in-memory state to [SharedPreferences].
+  ///
+  /// The three keys are written together; on any failure the in-memory state
+  /// (availableNames/eliminatedNames/selectedName) is left untouched and an
+  /// error indication is shown to the user via a toast. This central handling
+  /// satisfies the manual-pick (Req 5.3) and reset (Req 6.5) save-failure
+  /// requirements for every call site without mutating state.
   Future<void> _saveState() async {
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.setString('selectedName', selectedName);
-    await prefs.setStringList('availableNames', availableNames);
-    await prefs.setStringList('eliminatedNames', eliminatedNames);
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final payload = buildPersistencePayload(_currentPickerState());
+      await prefs.setString(
+        kSelectedNameKey,
+        payload[kSelectedNameKey] as String,
+      );
+      await prefs.setStringList(
+        kAvailableNamesKey,
+        payload[kAvailableNamesKey] as List<String>,
+      );
+      await prefs.setStringList(
+        kEliminatedNamesKey,
+        payload[kEliminatedNamesKey] as List<String>,
+      );
+    } catch (_) {
+      // Persistence failed: preserve the in-memory result as-is (do not mutate
+      // any state fields) and surface an error indication to the user.
+      Fluttertoast.showToast(msg: "Gagal menyimpan data");
+    }
+  }
+
+  /// Builds an immutable [PickerState] snapshot from the current widget fields.
+  PickerState _currentPickerState() {
+    return PickerState(
+      availableNames: availableNames,
+      eliminatedNames: eliminatedNames,
+      selectedName: selectedName,
+      isPicking: isPicking,
+    );
   }
 
   void pickRandomName() {
@@ -82,6 +130,7 @@ class _RandomPickerScreenState extends State<RandomPickerScreen> {
     _timer = Timer.periodic(const Duration(milliseconds: 100), (timer) {
       setState(() {
         selectedName = availableNames[random.nextInt(availableNames.length)];
+        _animationKey++;
       });
 
       count++;
@@ -106,11 +155,106 @@ class _RandomPickerScreenState extends State<RandomPickerScreen> {
     _saveState();
   }
 
+  /// Validates a manual selection of [name] using the pure [manualPick] guard.
+  ///
+  /// Computes the next state via [manualPick]; if the guard rejects the request
+  /// (picking in progress, no names available, or [name] not in
+  /// `availableNames`) the state is unchanged and nothing is persisted. When a
+  /// valid pick occurs, [finalizeManualPick] applies the result.
+  void pickManualName(String name) {
+    final current = _currentPickerState();
+    final next = manualPick(current, name);
+    if (next != current) {
+      finalizeManualPick(name);
+    }
+  }
+
+  /// Applies a valid manual pick of [name] to the widget state.
+  ///
+  /// Recomputes the result through [manualPick] (idempotent with the guard),
+  /// commits it via [setState], plays the confetti effect, then persists state.
+  void finalizeManualPick(String name) {
+    final result = manualPick(_currentPickerState(), name);
+    if (result == _currentPickerState()) return;
+
+    setState(() {
+      availableNames = List<String>.from(result.availableNames);
+      eliminatedNames = List<String>.from(result.eliminatedNames);
+      selectedName = result.selectedName;
+    });
+    confettiController.play();
+    _saveState();
+  }
+
+  /// Opens the manual pick selector.
+  ///
+  /// Early-returns (no-op) when [isPicking] is true or [availableNames] is
+  /// empty. Otherwise presents a modal bottom sheet containing a [ListView] of
+  /// the current [availableNames] (preserving order, one tappable item per
+  /// name). Tapping an item closes the sheet and processes the selection via
+  /// [pickManualName].
+  void showManualPickSelector() {
+    if (isPicking || availableNames.isEmpty) return;
+
+    // Snapshot the order/contents at open time for stable list rendering.
+    final names = List<String>.from(availableNames);
+
+    showModalBottomSheet<void>(
+      context: context,
+      backgroundColor: Colors.white,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
+      ),
+      builder: (sheetContext) {
+        return SafeArea(
+          key: const Key('manualPickSelector'),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Text(
+                  "Pilih nama secara manual",
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                    color: AppColor.secondaryColor,
+                  ),
+                ),
+              ),
+              const Divider(height: 1),
+              Flexible(
+                child: ListView.builder(
+                  shrinkWrap: true,
+                  itemCount: names.length,
+                  itemBuilder: (context, index) {
+                    final name = names[index];
+                    return ListTile(
+                      leading: Icon(
+                        Icons.person,
+                        color: AppColor.secondaryColor,
+                      ),
+                      title: Text(name),
+                      onTap: () {
+                        Navigator.pop(sheetContext);
+                        pickManualName(name);
+                      },
+                    );
+                  },
+                ),
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
   void resetPicker() {
     setState(() {
       availableNames = List<String>.from(allNames);
       eliminatedNames.clear();
-      selectedName = "Tekan tombol untuk memilih";
+      selectedName = kPickerPlaceholder;
     });
     _saveState();
   }
@@ -151,7 +295,7 @@ class _RandomPickerScreenState extends State<RandomPickerScreen> {
                           duration: const Duration(milliseconds: 200),
                           child: Text(
                             selectedName,
-                            key: ValueKey(selectedName),
+                            key: ValueKey('$selectedName-$_animationKey'),
                             textAlign: TextAlign.center,
                             style: const TextStyle(
                               fontSize: 28,
@@ -179,6 +323,18 @@ class _RandomPickerScreenState extends State<RandomPickerScreen> {
                 onPressed: isPicking || availableNames.isEmpty
                     ? null
                     : pickRandomName,
+              ),
+            ),
+            const SizedBox(height: 10),
+            SizedBox(
+              width: double.infinity,
+              child: DefaultButton(
+                key: const Key('manualPickButton'),
+                color: AppColor.secondaryColor,
+                text: "Pilih Manual",
+                onPressed: isPicking || availableNames.isEmpty
+                    ? null
+                    : showManualPickSelector,
               ),
             ),
             ConfettiWidget(
