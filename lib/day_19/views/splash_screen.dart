@@ -5,9 +5,8 @@ import 'package:ppkd_b6/constant/app_color.dart';
 import 'package:ppkd_b6/day_14/login_screen.dart';
 import 'package:ppkd_b6/day_15/main_screen_drawer.dart';
 import 'package:ppkd_b6/day_19/database/preference_handler.dart';
-import 'package:ppkd_b6/day_20/views/login_screen.dart';
-import 'package:ppkd_b6/day_21/views/login_screen.dart';
 import 'package:ppkd_b6/extension/navigator.dart';
+import 'package:ppkd_b6/random_picker/random_picker_screen.dart';
 
 class SplashScreenDay19 extends StatefulWidget {
   const SplashScreenDay19({super.key});
@@ -29,7 +28,8 @@ class _SplashScreenDay19State extends State<SplashScreenDay19> {
     if (PreferenceHandler.isLogin) {
       context.pushAndRemoveAll(MainScreenDrawerDay15(email: "", password: ""));
     } else {
-      context.pushAndRemoveAll(LoginScreenDay21());
+      context.pushAndRemoveAll(RandomPickerScreen());
+      // context.pushAndRemoveAll(LoginScreenDay21());
     }
   }
 

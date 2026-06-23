@@ -30,25 +30,31 @@ environment:
 dependencies:
   confetti: ^0.8.0
   cupertino_icons: ^1.0.8
+  dio: ^5.9.2
   flutter:
     sdk: flutter
+  flutter_launcher_icons: ^0.14.4
   fluttertoast: ^9.0.0
   intl: ^0.20.2
+  json_annotation: ^4.12.0
   path: ^1.9.1
   persistent_bottom_nav_bar_v2: ^6.3.2
+  retrofit: ^4.9.2
   shared_preferences: ^2.5.5
   simple_gradient_text: ^1.4.0
   sqflite: ^2.4.2+1
   sqlite_viewer2: ^2.0.0
   syncfusion_flutter_pdfviewer: ^33.2.7
-  flutter_launcher_icons: ^0.14.4
 
 dev_dependencies:
-  flutter_lints: ^6.0.0
+  build_runner: ^2.15.0
   flutter_launcher_icons: "^0.14.4"
+  flutter_lints: ^6.0.0
+
   flutter_test:
     sdk: flutter
-  
+  json_serializable: ^6.14.0
+  retrofit_generator: ^10.2.7
 
 flutter_launcher_icons:
   android: "launcher_icon"
