@@ -5,7 +5,7 @@ import 'package:ppkd_b6/constant/app_color.dart';
 import 'package:ppkd_b6/day_14/login_screen.dart';
 import 'package:ppkd_b6/day_15/main_screen_drawer.dart';
 import 'package:ppkd_b6/day_19/database/preference_handler.dart';
-import 'package:ppkd_b6/day_35/views/auth/register_screen.dart';
+import 'package:ppkd_b6/day_36/maps_screen.dart';
 import 'package:ppkd_b6/extension/navigator.dart';
 
 class SplashScreenDay19 extends StatefulWidget {
@@ -28,7 +28,7 @@ class _SplashScreenDay19State extends State<SplashScreenDay19> {
     if (PreferenceHandler.isLogin) {
       context.pushAndRemoveAll(MainScreenDrawerDay15(email: "", password: ""));
     } else {
-      context.pushAndRemoveAll(RegisterScreenDay35());
+      context.pushAndRemoveAll(GoogleMapsScreenDay36());
       // context.pushAndRemoveAll(LoginScreenDay21());
     }
   }
